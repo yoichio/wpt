@@ -7,4 +7,4 @@ html/tools/build.sh
 python mimesniff/mime-types/resources/generated-mime-types.py
 python3 css/css-ui/tools/appearance-build-webkit-reftests.py
 python3 WebIDL/tools/generate-setlike.py
-python3 html/syntax/preload-scanner.tentative/tools/generate.py
+python3 html/syntax/speculative-parsing/tools/generate.py
