@@ -19,13 +19,13 @@ const send = function(uuid, message) {
 
 const receive = async function(uuid, maybe_timeout) {
   const timeout = maybe_timeout || Infinity;
-  const retry_delay = 100;
-  for(let i = 0; i * retry_delay < timeout; ++i) {
+  let start = performance.now();
+  while(performance.now() - start < timeout) {
     let response = await fetch(dispatcher_url + `?uuid=${uuid}`);
     let data = await response.text();
     if (data != 'not ready')
       return data;
-    await new Promise(r => step_timeout(r, retry_delay));
+    await new Promise(r => setTimeout(r, 100)); // Save resources.
   }
   return "timeout";
 }
