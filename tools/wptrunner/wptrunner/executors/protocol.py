@@ -361,7 +361,8 @@ class TestDriverProtocolPart(ProtocolPart):
     def switch_to_window(self, wptrunner_id, initial_window=None):
         """Switch to a window given a wptrunner window id
 
-        :param str wptrunner_id: window id"""
+        :param str wptrunner_id: Testdriver-specific id for the target window
+        :param str initial: WebDriver window id for the test window"""
         if wptrunner_id is None:
             return
 
