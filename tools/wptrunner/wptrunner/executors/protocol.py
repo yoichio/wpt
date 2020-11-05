@@ -358,12 +358,15 @@ class TestDriverProtocolPart(ProtocolPart):
         :param str message: Additional data to add to the message."""
         pass
 
-    def switch_to_window(self, wptrunner_id):
+    def switch_to_window(self, wptrunner_id, initial_window=None):
         """Switch to a window given a wptrunner window id
 
         :param str wptrunner_id: window id"""
         if wptrunner_id is None:
             return
+
+        if initial_window is None:
+            initial_window = self.parent.base.current_window
 
         stack = [str(item) for item in self.parent.base.window_handles()]
         while stack:
@@ -372,7 +375,8 @@ class TestDriverProtocolPart(ProtocolPart):
                 self._switch_to_parent_frame()
                 continue
             elif isinstance(item, str):
-                self.parent.base.set_window(item)
+                if item != initial_window:
+                    self.parent.base.set_window(item)
             else:
                 self._switch_to_frame(item)
 
