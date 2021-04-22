@@ -588,8 +588,12 @@ class Http2WebTestRequestHandler(BaseWebTestRequestHandler):
                     req_handler = self.frame_handler(request, response, req_handler)
 
                 if hasattr(req_handler, 'handle_headers'):
-                    req_handler.handle_headers(frame, request, response)
-
+                    try:
+                        req_handler.handle_headers(frame, request, response)
+                    except StreamClosedError:
+                        self.logger.debug('(%s - %s) Unable to write response; stream'
+                                          'closed' % (self.uid, stream_id))
+                        break
             elif isinstance(frame, DataReceived):
                 wfile.write(frame.data)
 

@@ -37,3 +37,23 @@ testUpload("Fetch with POST with ReadableStream", url,
     }})
   },
   "Test");
+
+function testUploadFailure(desc, url, method, createBody) {
+  const requestInit = {method};
+  promise_test(t => {
+    const body = createBody();
+    if (body) {
+      requestInit["body"] = body;
+    }
+    return promise_rejects_js(t, TypeError, fetch(url, requestInit));
+  }, desc);
+}
+
+testUploadFailure("Fetch with POST with ReadableStream containing String", url,
+  "POST",
+  () => {
+    return new ReadableStream({start: controller => {
+      controller.enqueue("Test");
+      controller.close();
+    }})
+  });
